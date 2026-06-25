@@ -7,8 +7,9 @@
 - Get and set the screen brightness (GNOME).
 - Get and set the keyboard backlight brightness (GNOME and UPower).
 - Step screen brightness up and down, and toggle the keyboard backlight.
-- Read battery state via UPower: charge percentage, charging state, and time estimates.
-- Check whether the system is running on battery.
+- Read battery state via UPower: charge percentage, charging state, time estimates, energy, voltage, temperature, capacity (health), and more.
+- Enumerate all power devices and inspect any of them by path.
+- Check whether the system is running on battery and read lid state.
 
 ## Installation
 
@@ -55,22 +56,31 @@ GNOME's power daemon is a session-bus policy layer on top of freedesktop's UPowe
 ```dart
 import 'package:dbus_power/dbus_power.dart';
 
-void main() async {
+Future<void> main() async {
   final power = DBusFreedesktopPower();
+  try {
+    // Whether the system is running on battery
+    print('On battery: ${await power.isOnBattery()}');
 
-  // Whether the system is running on battery
-  print('On battery: ${await power.isOnBattery()}');
+    // Battery charge percentage and state (1=charging, 2=discharging, 4=full)
+    print('Battery: ${await power.getBatteryPercentage()}%');
+    print('Battery state: ${await power.getBatteryState()}');
+    print('Energy rate: ${await power.getEnergyRate()} W');
 
-  // Battery charge percentage and state (1=charging, 2=discharging, 4=full)
-  print('Battery: ${await power.getBatteryPercentage()}%');
-  print('Battery state: ${await power.getBatteryState()}');
+    // Enumerate devices and inspect a specific one by path
+    final devices = await power.enumerateDevices();
+    print('Devices: $devices');
+    final bat = devices.firstWhere((d) => d.contains('battery_BAT'));
+    print('Battery health: ${await power.getCapacity(bat)}%');
+    print('Vendor/model: ${await power.getVendor(bat)} ${await power.getModel(bat)}');
 
-  // Keyboard backlight brightness (0-100)
-  print('Keyboard backlight: ${await power.getKeyboardBrightness()}%');
-  await power.setKeyboardBrightness(75);
-
-  // Close the D-Bus client connection
-  await power.close();
+    // Keyboard backlight brightness (0-100), or raw values
+    print('Keyboard backlight: ${await power.getKeyboardBrightness()}%');
+    await power.setKeyboardBrightness(75);
+  } finally {
+    // Close the D-Bus client connection
+    await power.close();
+  }
 }
 ```
 

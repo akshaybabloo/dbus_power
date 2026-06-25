@@ -6,7 +6,7 @@ default: (help)
 # Print this help message
 @help:
     echo "run 'just list' to list targets"
-    echo "more information can be found at  at http://just.systems/"
+    echo "more information can be found at http://just.systems/"
     just list
 
 # List the recipes and descriptions

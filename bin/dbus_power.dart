@@ -6,46 +6,48 @@ void main() async {
   final upower = DBusFreedesktopPower();
   final console = Console();
 
-  printMenu(console);
-  var option = int.tryParse(console.readLine() ?? '');
-
-  while (option != 9) {
-    switch (option) {
-      case 1:
-        await getScreenBrightness(power, console);
-        break;
-      case 2:
-        await setScreenBrightness(power, console);
-        break;
-      case 3:
-        await stepScreen(power, console, up: true);
-        break;
-      case 4:
-        await stepScreen(power, console, up: false);
-        break;
-      case 5:
-        await getKeyboardBrightness(power, console);
-        break;
-      case 6:
-        await setKeyboardBrightness(power, console);
-        break;
-      case 7:
-        await toggleKeyboard(power, console);
-        break;
-      case 8:
-        await batteryStatus(upower, console);
-        break;
-      default:
-        console.writeLine('Invalid option. Please try again.');
-    }
-
-    console.writeLine('');
+  try {
     printMenu(console);
-    option = int.tryParse(console.readLine() ?? '');
-  }
+    var option = int.tryParse(console.readLine() ?? '');
 
-  await power.close();
-  await upower.close();
+    while (option != 9) {
+      switch (option) {
+        case 1:
+          await getScreenBrightness(power, console);
+          break;
+        case 2:
+          await setScreenBrightness(power, console);
+          break;
+        case 3:
+          await stepScreen(power, console, up: true);
+          break;
+        case 4:
+          await stepScreen(power, console, up: false);
+          break;
+        case 5:
+          await getKeyboardBrightness(power, console);
+          break;
+        case 6:
+          await setKeyboardBrightness(power, console);
+          break;
+        case 7:
+          await toggleKeyboard(power, console);
+          break;
+        case 8:
+          await batteryStatus(upower, console);
+          break;
+        default:
+          console.writeLine('Invalid option. Please try again.');
+      }
+
+      console.writeLine('');
+      printMenu(console);
+      option = int.tryParse(console.readLine() ?? '');
+    }
+  } finally {
+    await power.close();
+    await upower.close();
+  }
 }
 
 void printMenu(Console console) {

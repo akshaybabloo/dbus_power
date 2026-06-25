@@ -61,6 +61,9 @@ class DBusFreedesktopPower {
 
   /// Set the keyboard backlight brightness from a percentage (0-100)
   Future<void> setKeyboardBrightness(int percent) async {
+    if (percent < 0 || percent > 100) {
+      throw RangeError.range(percent, 0, 100, 'percent');
+    }
     final max = await _kbd.callGetMaxBrightness();
     await _kbd.callSetBrightness((percent / 100 * max).round());
   }
