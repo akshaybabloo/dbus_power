@@ -16,3 +16,6 @@ list:
 generate:
     dart pub global activate dbus
     dart-dbus generate-remote-object ./interfaces/org.gnome.SettingsDaemon.Power.xml -o lib/interfaces/gnome_power_remote_object.dart --class-name OrgGnomeSettingsDaemonPower
+    dart-dbus generate-remote-object ./interfaces/org.freedesktop.UPower.xml -o lib/interfaces/upower_remote_object.dart --class-name OrgFreedesktopUPower
+    dart-dbus generate-remote-object ./interfaces/org.freedesktop.UPower.KbdBacklight.xml -o lib/interfaces/upower_kbd_backlight_remote_object.dart --class-name OrgFreedesktopUPowerKbdBacklight
+    dart-dbus generate-remote-object ./interfaces/org.freedesktop.UPower.Device.xml -o lib/interfaces/upower_device_remote_object.dart --class-name OrgFreedesktopUPowerDevice

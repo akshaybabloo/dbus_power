@@ -3,12 +3,13 @@ import 'package:dbus_power/dbus_power.dart';
 
 void main() async {
   final power = DBusGnomePower();
+  final upower = DBusFreedesktopPower();
   final console = Console();
 
   printMenu(console);
   var option = int.tryParse(console.readLine() ?? '');
 
-  while (option != 8) {
+  while (option != 9) {
     switch (option) {
       case 1:
         await getScreenBrightness(power, console);
@@ -31,6 +32,9 @@ void main() async {
       case 7:
         await toggleKeyboard(power, console);
         break;
+      case 8:
+        await batteryStatus(upower, console);
+        break;
       default:
         console.writeLine('Invalid option. Please try again.');
     }
@@ -41,11 +45,12 @@ void main() async {
   }
 
   await power.close();
+  await upower.close();
 }
 
 void printMenu(Console console) {
-  console.writeLine('GNOME Power Manager');
-  console.writeLine('-------------------');
+  console.writeLine('Power Manager');
+  console.writeLine('-------------');
   console.writeLine('1. Get screen brightness');
   console.writeLine('2. Set screen brightness');
   console.writeLine('3. Step screen brightness up');
@@ -53,7 +58,8 @@ void printMenu(Console console) {
   console.writeLine('5. Get keyboard brightness');
   console.writeLine('6. Set keyboard brightness');
   console.writeLine('7. Toggle keyboard backlight');
-  console.writeLine('8. Exit');
+  console.writeLine('8. Battery status');
+  console.writeLine('9. Exit');
   console.writeLine('');
   console.writeLine('Select an option:');
 }
@@ -98,4 +104,32 @@ Future<void> setKeyboardBrightness(DBusGnomePower power, Console console) async 
 Future<void> toggleKeyboard(DBusGnomePower power, Console console) async {
   final brightness = await power.keyboardToggle();
   console.writeLine('Keyboard brightness: $brightness%');
+}
+
+Future<void> batteryStatus(DBusFreedesktopPower upower, Console console) async {
+  final onBattery = await upower.isOnBattery();
+  final percentage = await upower.getBatteryPercentage();
+  final state = batteryStateName(await upower.getBatteryState());
+
+  console.writeLine('Power source: ${onBattery ? 'battery' : 'AC'}');
+  console.writeLine('Battery: $percentage% ($state)');
+}
+
+String batteryStateName(int state) {
+  switch (state) {
+    case 1:
+      return 'charging';
+    case 2:
+      return 'discharging';
+    case 3:
+      return 'empty';
+    case 4:
+      return 'fully charged';
+    case 5:
+      return 'pending charge';
+    case 6:
+      return 'pending discharge';
+    default:
+      return 'unknown';
+  }
 }
