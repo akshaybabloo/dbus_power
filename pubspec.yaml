@@ -1,0 +1,27 @@
+name: dbus_power
+description: A Dart library for interacting with Linux power settings via D-Bus, supporting both GNOME Power (session bus) and UPower/freedesktop (system bus) backends
+version: 0.0.1
+repository: https://github.com/akshaybabloo/dbus_power
+
+environment:
+  sdk: ^3.12.1
+
+topics:
+  - dbus
+  - power
+  - linux
+
+platforms:
+  linux:
+
+# Add regular dependencies here.
+dependencies:
+  dart_console: ^5.1.0
+  dbus: ^0.7.14
+
+dev_dependencies:
+  lints: ^6.0.0
+  test: ^1.25.6
+
+executables:
+  dbus-power: dbus_power
