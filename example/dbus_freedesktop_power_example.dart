@@ -17,16 +17,23 @@ Future<void> main() async {
     // Inspect a specific device by path
     final devices = await power.enumerateDevices();
     print('Devices: $devices');
-    final bat = devices.firstWhere((d) => d.contains('battery_BAT'), orElse: () => '');
+    final bat = devices.firstWhere(
+      (d) => d.contains('battery_BAT'),
+      orElse: () => '',
+    );
     if (bat.isNotEmpty) {
-      print('BAT vendor/model: ${await power.getVendor(bat)} ${await power.getModel(bat)}');
+      print(
+        'BAT vendor/model: ${await power.getVendor(bat)} ${await power.getModel(bat)}',
+      );
       print('BAT health: ${await power.getCapacity(bat)}%');
     }
 
     // Keyboard backlight (percentage and raw)
     print('Keyboard backlight: ${await power.getKeyboardBrightness()}%');
-    print('Keyboard raw: ${await power.getKeyboardBrightnessRaw()}'
-        ' / ${await power.getMaxKeyboardBrightness()}');
+    print(
+      'Keyboard raw: ${await power.getKeyboardBrightnessRaw()}'
+      ' / ${await power.getMaxKeyboardBrightness()}',
+    );
   } finally {
     await power.close();
   }

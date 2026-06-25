@@ -11,7 +11,8 @@ class DBusFreedesktopPower {
 
   DBusFreedesktopPower() : _client = DBusClient.system();
 
-  OrgFreedesktopUPower get _upower => OrgFreedesktopUPower(_client, _destination);
+  OrgFreedesktopUPower get _upower =>
+      OrgFreedesktopUPower(_client, _destination);
 
   OrgFreedesktopUPowerKbdBacklight get _kbd =>
       OrgFreedesktopUPowerKbdBacklight(_client, _destination);
@@ -19,7 +20,11 @@ class DBusFreedesktopPower {
   /// The device to read, defaulting to the composite display device.
   OrgFreedesktopUPowerDevice _device([String? path]) => path == null
       ? OrgFreedesktopUPowerDevice(_client, _destination)
-      : OrgFreedesktopUPowerDevice(_client, _destination, path: DBusObjectPath(path));
+      : OrgFreedesktopUPowerDevice(
+          _client,
+          _destination,
+          path: DBusObjectPath(path),
+        );
 
   // Daemon
 
@@ -72,7 +77,8 @@ class DBusFreedesktopPower {
   Future<int> getKeyboardBrightnessRaw() => _kbd.callGetBrightness();
 
   /// Set the raw keyboard backlight brightness
-  Future<void> setKeyboardBrightnessRaw(int value) => _kbd.callSetBrightness(value);
+  Future<void> setKeyboardBrightnessRaw(int value) =>
+      _kbd.callSetBrightness(value);
 
   /// Get the maximum raw keyboard backlight brightness
   Future<int> getMaxKeyboardBrightness() => _kbd.callGetMaxBrightness();
@@ -87,16 +93,19 @@ class DBusFreedesktopPower {
   Future<int> getBatteryState([String? device]) => _device(device).getState();
 
   /// UPower's estimate of the seconds until the battery is empty
-  Future<int> getTimeToEmpty([String? device]) => _device(device).getTimeToEmpty();
+  Future<int> getTimeToEmpty([String? device]) =>
+      _device(device).getTimeToEmpty();
 
   /// UPower's estimate of the seconds until the battery is full
-  Future<int> getTimeToFull([String? device]) => _device(device).getTimeToFull();
+  Future<int> getTimeToFull([String? device]) =>
+      _device(device).getTimeToFull();
 
   /// Get the battery type (1=line power, 2=battery, 3=ups, ...)
   Future<int> getDeviceType([String? device]) => _device(device).getType();
 
   /// Get the device's kernel native path
-  Future<String> getNativePath([String? device]) => _device(device).getNativePath();
+  Future<String> getNativePath([String? device]) =>
+      _device(device).getNativePath();
 
   /// Get the device vendor
   Future<String> getVendor([String? device]) => _device(device).getVendor();
@@ -114,10 +123,12 @@ class DBusFreedesktopPower {
   Future<bool> isPresent([String? device]) => _device(device).getIsPresent();
 
   /// Whether the device is rechargeable
-  Future<bool> isRechargeable([String? device]) => _device(device).getIsRechargeable();
+  Future<bool> isRechargeable([String? device]) =>
+      _device(device).getIsRechargeable();
 
   /// Whether the device is a power supply (as opposed to e.g. a peripheral)
-  Future<bool> isPowerSupply([String? device]) => _device(device).getPowerSupply();
+  Future<bool> isPowerSupply([String? device]) =>
+      _device(device).getPowerSupply();
 
   /// Whether a line-power device is online
   Future<bool> isOnline([String? device]) => _device(device).getOnline();
@@ -126,41 +137,50 @@ class DBusFreedesktopPower {
   Future<double> getEnergy([String? device]) => _device(device).getEnergy();
 
   /// Get the energy when empty in watt-hours
-  Future<double> getEnergyEmpty([String? device]) => _device(device).getEnergyEmpty();
+  Future<double> getEnergyEmpty([String? device]) =>
+      _device(device).getEnergyEmpty();
 
   /// Get the energy when full in watt-hours
-  Future<double> getEnergyFull([String? device]) => _device(device).getEnergyFull();
+  Future<double> getEnergyFull([String? device]) =>
+      _device(device).getEnergyFull();
 
   /// Get the design energy when full in watt-hours
   Future<double> getEnergyFullDesign([String? device]) =>
       _device(device).getEnergyFullDesign();
 
   /// Get the energy rate (power draw) in watts
-  Future<double> getEnergyRate([String? device]) => _device(device).getEnergyRate();
+  Future<double> getEnergyRate([String? device]) =>
+      _device(device).getEnergyRate();
 
   /// Get the device voltage
   Future<double> getVoltage([String? device]) => _device(device).getVoltage();
 
   /// Get the device temperature in degrees Celsius
-  Future<double> getTemperature([String? device]) => _device(device).getTemperature();
+  Future<double> getTemperature([String? device]) =>
+      _device(device).getTemperature();
 
   /// Get the battery capacity (health) as a percentage of design capacity
   Future<double> getCapacity([String? device]) => _device(device).getCapacity();
 
   /// Get the battery technology (1=lithium ion, ...)
-  Future<int> getTechnology([String? device]) => _device(device).getTechnology();
+  Future<int> getTechnology([String? device]) =>
+      _device(device).getTechnology();
 
   /// Get the number of charge cycles, or -1 if unknown
-  Future<int> getChargeCycles([String? device]) => _device(device).getChargeCycles();
+  Future<int> getChargeCycles([String? device]) =>
+      _device(device).getChargeCycles();
 
   /// Get the warning level (1=none, 3=low, 4=critical, 5=action)
-  Future<int> getWarningLevel([String? device]) => _device(device).getWarningLevel();
+  Future<int> getWarningLevel([String? device]) =>
+      _device(device).getWarningLevel();
 
   /// Get the coarse battery level (1=none, 3=low, 6=normal, 8=full)
-  Future<int> getBatteryLevel([String? device]) => _device(device).getBatteryLevel();
+  Future<int> getBatteryLevel([String? device]) =>
+      _device(device).getBatteryLevel();
 
   /// Get the time the device was last updated (seconds since epoch)
-  Future<int> getUpdateTime([String? device]) => _device(device).getUpdateTime();
+  Future<int> getUpdateTime([String? device]) =>
+      _device(device).getUpdateTime();
 
   /// Refresh the cached data for the device
   Future<void> refresh([String? device]) => _device(device).callRefresh();
@@ -171,8 +191,7 @@ class DBusFreedesktopPower {
     int timespan,
     int resolution, {
     String? device,
-  }) =>
-      _device(device).callGetHistory(type, timespan, resolution);
+  }) => _device(device).callGetHistory(type, timespan, resolution);
 
   /// Get statistics (charging/discharging) for the device
   Future<List<List<DBusValue>>> getStatistics(String type, {String? device}) =>

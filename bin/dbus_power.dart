@@ -82,17 +82,27 @@ Future<void> setScreenBrightness(DBusGnomePower power, Console console) async {
   console.writeLine('Screen brightness set to $value%');
 }
 
-Future<void> stepScreen(DBusGnomePower power, Console console, {required bool up}) async {
+Future<void> stepScreen(
+  DBusGnomePower power,
+  Console console, {
+  required bool up,
+}) async {
   final result = up ? await power.screenStepUp() : await power.screenStepDown();
   console.writeLine('Screen brightness: ${result[0].asInt32()}%');
 }
 
-Future<void> getKeyboardBrightness(DBusGnomePower power, Console console) async {
+Future<void> getKeyboardBrightness(
+  DBusGnomePower power,
+  Console console,
+) async {
   final brightness = await power.getKeyboardBrightness();
   console.writeLine('Keyboard brightness: $brightness%');
 }
 
-Future<void> setKeyboardBrightness(DBusGnomePower power, Console console) async {
+Future<void> setKeyboardBrightness(
+  DBusGnomePower power,
+  Console console,
+) async {
   console.writeLine('Enter brightness (0-100):');
   final value = int.tryParse(console.readLine() ?? '');
   if (value == null || value < 0 || value > 100) {

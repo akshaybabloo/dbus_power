@@ -7,7 +7,10 @@ class DBusGnomePower {
   late final OrgGnomeSettingsDaemonPower _power;
 
   DBusGnomePower() : _client = DBusClient.session() {
-    _power = OrgGnomeSettingsDaemonPower(_client, 'org.gnome.SettingsDaemon.Power');
+    _power = OrgGnomeSettingsDaemonPower(
+      _client,
+      'org.gnome.SettingsDaemon.Power',
+    );
   }
 
   // Keyboard backlight
