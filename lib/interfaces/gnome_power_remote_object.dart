@@ -139,7 +139,7 @@ class OrgGnomeSettingsDaemonPower extends DBusRemoteObject {
   }
 
   /// Invokes org.gnome.SettingsDaemon.Power.Screen.StepUp()
-  Future<List<DBusValue>> callStepUp_({
+  Future<(int new_percentage, String connector)> callStepUp_({
     bool noAutoStart = false,
     bool allowInteractiveAuthorization = false,
   }) async {
@@ -151,11 +151,14 @@ class OrgGnomeSettingsDaemonPower extends DBusRemoteObject {
       noAutoStart: noAutoStart,
       allowInteractiveAuthorization: allowInteractiveAuthorization,
     );
-    return result.returnValues;
+    return (
+      result.returnValues[0].asInt32(),
+      result.returnValues[1].asString(),
+    );
   }
 
   /// Invokes org.gnome.SettingsDaemon.Power.Screen.StepDown()
-  Future<List<DBusValue>> callStepDown_({
+  Future<(int new_percentage, String connector)> callStepDown_({
     bool noAutoStart = false,
     bool allowInteractiveAuthorization = false,
   }) async {
@@ -167,11 +170,14 @@ class OrgGnomeSettingsDaemonPower extends DBusRemoteObject {
       noAutoStart: noAutoStart,
       allowInteractiveAuthorization: allowInteractiveAuthorization,
     );
-    return result.returnValues;
+    return (
+      result.returnValues[0].asInt32(),
+      result.returnValues[1].asString(),
+    );
   }
 
   /// Invokes org.gnome.SettingsDaemon.Power.Screen.Cycle()
-  Future<List<DBusValue>> callCycle({
+  Future<(int new_percentage, int output_id)> callCycle({
     bool noAutoStart = false,
     bool allowInteractiveAuthorization = false,
   }) async {
@@ -183,6 +189,6 @@ class OrgGnomeSettingsDaemonPower extends DBusRemoteObject {
       noAutoStart: noAutoStart,
       allowInteractiveAuthorization: allowInteractiveAuthorization,
     );
-    return result.returnValues;
+    return (result.returnValues[0].asInt32(), result.returnValues[1].asInt32());
   }
 }

@@ -87,8 +87,10 @@ Future<void> stepScreen(
   Console console, {
   required bool up,
 }) async {
-  final result = up ? await power.screenStepUp() : await power.screenStepDown();
-  console.writeLine('Screen brightness: ${result[0].asInt32()}%');
+  final (percentage, _) = up
+      ? await power.screenStepUp()
+      : await power.screenStepDown();
+  console.writeLine('Screen brightness: $percentage%');
 }
 
 Future<void> getKeyboardBrightness(

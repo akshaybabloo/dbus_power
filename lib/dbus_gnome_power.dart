@@ -42,13 +42,15 @@ class DBusGnomePower {
   Future<void> setScreenBrightness(int value) => _power.setBrightness_(value);
 
   /// Step the screen brightness up, returns the new percentage and connector
-  Future<List<DBusValue>> screenStepUp() => _power.callStepUp_();
+  Future<(int percentage, String connector)> screenStepUp() =>
+      _power.callStepUp_();
 
   /// Step the screen brightness down, returns the new percentage and connector
-  Future<List<DBusValue>> screenStepDown() => _power.callStepDown_();
+  Future<(int percentage, String connector)> screenStepDown() =>
+      _power.callStepDown_();
 
   /// Cycle the screen brightness, returns the new percentage and output id
-  Future<List<DBusValue>> screenCycle() => _power.callCycle();
+  Future<(int percentage, int outputId)> screenCycle() => _power.callCycle();
 
   /// Closes the D-Bus client connection
   Future<void> close() => _client.close();
